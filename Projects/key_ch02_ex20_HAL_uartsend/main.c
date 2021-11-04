@@ -46,15 +46,32 @@
 #define GPIO_INTERRUPT_PRIORITY (7u)
 
 volatile bool pressFlag = false;
+
+// UART object and configuration structure
 cyhal_uart_t uart_obj;
+const cyhal_uart_cfg_t uart_config =
+{
+	.data_bits = 8,
+	.stop_bits = 1,
+	.parity = CYHAL_UART_PARITY_NONE,
+	.rx_buffer = NULL,
+	.rx_buffer_size = 0
+};
 
 //Interrupt handler
-static void button_isr(void *handler_arg, cyhal_gpio_irq_event_t event)
+static void button_isr(void *handler_arg, cyhal_gpio_event_t event)
 {
 	//set press flag and toggle led
 	cyhal_gpio_toggle(CYBSP_USER_LED);
 	pressFlag = true;
 }
+
+// GPIO callback initialization structure
+cyhal_gpio_callback_data_t cb_data =
+{
+	.callback     = button_isr,
+	.callback_arg = NULL
+};
 
 int main(void)
 {
@@ -86,7 +103,7 @@ int main(void)
 	}
 
 	/* Initialize UART */
-	result = 	cyhal_uart_init(&uart_obj, CYBSP_DEBUG_UART_TX, CYBSP_DEBUG_UART_RX, NULL, NULL);
+	result = cyhal_uart_init(&uart_obj, CYBSP_DEBUG_UART_TX, CYBSP_DEBUG_UART_RX, NC, NC, NULL, &uart_config);
 	/* UART init failed. Stop program execution */
 	if (result != CY_RSLT_SUCCESS)
 	{
@@ -94,10 +111,10 @@ int main(void)
 	}
 
 	/* Configure GPIO interrupt */
-	cyhal_gpio_register_callback(CYBSP_USER_BTN, button_isr, NULL);
+	cyhal_gpio_register_callback(CYBSP_USER_BTN, &cb_data);
 	cyhal_gpio_enable_event(CYBSP_USER_BTN, CYHAL_GPIO_IRQ_FALL, GPIO_INTERRUPT_PRIORITY, true);
 
-	//enable interrupts
+	// enable interrupts
     __enable_irq();
 
     for (;;)

@@ -25,6 +25,15 @@ This class consists of 6 chapters:
 - Chapter 5: DMA - Description of PSoC™ Direct Memory Access, how to use DMA
 - Chapter 6: Dual Core - Learn about dual core applications on PSoC 6 and inter-process communication
 
+## Hardware
+
+The following hardware is used for the exercises in this class:
+
+- CY8CKIT-062S2-43012 (PSoC™ 62S2 Wi-Fi BT Pioneer Kit)
+- CY8CKIT-149 (PSoC™ 4100S Plus Prototyping Kit)
+- CY8CKIT-028-TFT (TFT Display Shield Board)(optional)
+- Ammeter (for low power chapter exercises)
+
 ## References
 
 Additional information can be found at:
