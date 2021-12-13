@@ -17,13 +17,14 @@ UARTs, etc. CAPSENSE™ and DMA are covered in detail, as is the use of low powe
 
 ## Manual Chapters
 
-This class consists of 6 chapters:
+This class consists of 7 chapters:
 - Chapter 1: Introduction - Overall introduction to PSoC™ devices
 - Chapter 2: Peripherals - Description of the PDL and HAL middleware, how to use them to interact with PSoC™ peripherals
 - Chapter 3: CAPSENSE - Description of Infineon's CAPSENSE™ solution, how to use CAPSENSE™ tools and middleware
 - Chapter 4: Low-Power - Description of PSoC™ low power, how to use low power modes
 - Chapter 5: DMA - Description of PSoC™ Direct Memory Access, how to use DMA
 - Chapter 6: Dual Core - Learn about dual core applications on PSoC 6 and inter-process communication
+- Chapter 7: Supplementary Material - Additional background electronics information
 
 ## Hardware
 
