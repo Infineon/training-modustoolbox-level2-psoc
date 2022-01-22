@@ -73,8 +73,8 @@ int main(void)
     // Interrupt config structure
     cy_stc_sysint_t intrCfg =
 	{
-		/*.intrSrc =*/ ioss_interrupts_gpio_3_IRQn, /* Interrupt source is GPIO port 3 interrupt */
-		/*.intrPriority =*/ 3UL                     /* Interrupt priority is 7 */
+		/*.intrSrc =*/ CYBSP_USER_BTN_IRQ,
+		/*.intrPriority =*/ 3UL
 	};
 
     /* Initialize the interrupt with vector at Interrupt_Handler_Port3() */
