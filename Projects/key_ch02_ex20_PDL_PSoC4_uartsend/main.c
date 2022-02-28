@@ -44,13 +44,13 @@
 
 volatile bool pressedFlag = false;
 
-#define PORT3_INTR_MASK  (0x00000001UL << 3)
+#define PORT_INTR_MASK  (0x00000001UL << CYBSP_USER_BTN_PORT_NUM)
 
 void Interrupt_Handler_Port3(void){
 	// Get interrupt cause
 	uint32_t intrSrc = Cy_GPIO_GetInterruptCause();
 	/* Check if the interrupt was from port 3 */
-	if(PORT3_INTR_MASK == (intrSrc & PORT3_INTR_MASK)){
+	if(PORT_INTR_MASK == (intrSrc & PORT_INTR_MASK)){
 		/* Clear the P3.7 interrupt */
 		Cy_GPIO_ClearInterrupt(CYBSP_USER_BTN_PORT, CYBSP_USER_BTN_NUM);
 		// Toggle LED

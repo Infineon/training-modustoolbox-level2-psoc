@@ -1,14 +1,14 @@
 /******************************************************************************
 * File Name:   main.c
 *
-* Description: This is the source code for the Empty PSoC4  Application
+* Description: This is the source code for the Empty PSoC6 Application
 *              for ModusToolbox.
 *
 * Related Document: See README.md
 *
 *
 *******************************************************************************
-* (c) (2020), Cypress Semiconductor Corporation. All rights reserved.
+* (c) 2019-2021, Cypress Semiconductor Corporation. All rights reserved.
 *******************************************************************************
 * This software, including source code, documentation and related materials
 * ("Software"), is owned by Cypress Semiconductor Corporation or one of its
@@ -40,25 +40,68 @@
 *******************************************************************************/
 
 #include "cy_pdl.h"
+#include "cyhal.h"
 #include "cybsp.h"
 
-#define PORT_INTR_MASK  (0x00000001UL << CYBSP_USER_BTN_PORT_NUM)
+#include "FreeRTOS.h"
+#include "task.h"
+#include "queue.h"
 
-void Interrupt_Handler_Port3(void){
-	// Get interrupt cause
-	uint32_t intrSrc = Cy_GPIO_GetInterruptCause();
-	/* Check if the interrupt was from port 3 */
-	if(PORT_INTR_MASK == (intrSrc & PORT_INTR_MASK)){
-		/* Clear the P3.7 interrupt */
-		Cy_GPIO_ClearInterrupt(CYBSP_USER_BTN_PORT, CYBSP_USER_BTN_NUM);
-		// Toggle LED
-		Cy_GPIO_Inv(CYBSP_USER_LED_PORT, CYBSP_USER_LED_NUM);
-	}
+volatile int uxTopUsedPriority;
+
+static QueueHandle_t queueHandle;
+
+/* Button ISR */
+void button_interrupt_handler(void* handler_arg, cyhal_gpio_event_t event)
+{
+    static BaseType_t xHigherPriorityTaskWoken;
+    static uint32_t count = 0;
+
+    /* Increment Count each time the button is pressed */
+    count++;
+
+    /* Send count to the queue */
+    xQueueSendFromISR(queueHandle, &count, &xHigherPriorityTaskWoken);
+
+    /* Yield current task if a higher priority task is now unblocked */
+    portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+}
+
+/* Structure for GPIO interrupt */
+cyhal_gpio_callback_data_t button_interrupt_data =
+{
+    .callback     = button_interrupt_handler,
+    .callback_arg = NULL
+};
+
+/* Task to handle the LED */
+void led_task()
+{
+	uint32_t blinkCount = 1;
+
+    while (1)
+    {
+        /* Wait for new blink value */
+    	xQueueReceive(queueHandle, &blinkCount, portMAX_DELAY);
+
+    	/* Blink LED according to count value */
+    	for(int i=0; i<blinkCount; i++)
+    	{
+    		cyhal_gpio_write(CYBSP_USER_LED, CYBSP_LED_STATE_ON);
+    		vTaskDelay(100);
+    		cyhal_gpio_write(CYBSP_USER_LED, CYBSP_LED_STATE_OFF);
+    		vTaskDelay(100);
+    	}
+
+    	vTaskDelay(500); /* Wait 500ms between blink sequences so we can tell them apart */
+    }
 }
 
 int main(void)
 {
     cy_rslt_t result;
+
+    uxTopUsedPriority = configMAX_PRIORITIES - 1;
 
     /* Initialize the device and board peripherals */
     result = cybsp_init() ;
@@ -67,26 +110,26 @@ int main(void)
         CY_ASSERT(0);
     }
 
-    /* Enable global interrupts */
     __enable_irq();
 
-    // Interrupt config structure
-    cy_stc_sysint_t intrCfg =
-	{
-		/*.intrSrc =*/ CYBSP_USER_BTN_IRQ,
-		/*.intrPriority =*/ 3UL
-	};
+    /* Initialize the User LED */
+    result = cyhal_gpio_init(CYBSP_USER_LED, CYHAL_GPIO_DIR_OUTPUT,
+                             CYHAL_GPIO_DRIVE_STRONG, CYBSP_LED_STATE_OFF);
 
-    /* Initialize the interrupt with vector at Interrupt_Handler_Port3() */
-	Cy_SysInt_Init(&intrCfg, &Interrupt_Handler_Port3);
-	// Send the button through the glitch filter
-	Cy_GPIO_SetFilter(CYBSP_USER_BTN_PORT, CYBSP_USER_BTN_NUM);
-	// Falling edge interrupt
-	Cy_GPIO_SetInterruptEdge(CYBSP_USER_BTN_PORT, CYBSP_USER_BTN_NUM, CY_GPIO_INTR_FALLING);
-	/* Enable the interrupt */
-	NVIC_EnableIRQ(intrCfg.intrSrc);
+    /* Initialize button with an interrupt of priority 3 */
+    cyhal_gpio_init(CYBSP_USER_BTN, CYHAL_GPIO_DIR_INPUT, CYHAL_GPIO_DRIVE_PULLUP, 1);
+	cyhal_gpio_register_callback(CYBSP_USER_BTN, &button_interrupt_data);
+	cyhal_gpio_enable_event(CYBSP_USER_BTN, CYHAL_GPIO_IRQ_FALL, 3, true);
 
-    for (;;){}
+	/* Create Queue */
+	queueHandle = xQueueCreate(10, sizeof(uint32_t));
+
+    /* Create task with a stack of 1024, no parameters, and a priority of 1 */
+    xTaskCreate(led_task, (char *)"led_task", 1024, 0, 1, NULL);
+
+    /* Start the RTOS scheduler */
+    vTaskStartScheduler();
+    CY_ASSERT(0);
 }
 
 /* [] END OF FILE */

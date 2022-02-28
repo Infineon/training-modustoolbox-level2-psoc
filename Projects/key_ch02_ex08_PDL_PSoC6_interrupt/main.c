@@ -42,13 +42,13 @@
 #include "cy_pdl.h"
 #include "cybsp.h"
 
-#define PORT0_INTR_MASK  (0x00000001UL << 0)
+#define PORT_INTR_MASK  (0x00000001UL << CYBSP_USER_BTN_PORT_NUM)
 
 void Interrupt_Handler_Port0(void){
 	// Get interrupt cause
 	uint32_t intrSrc = Cy_GPIO_GetInterruptCause0();
 	/* Check if the interrupt was from port 0 */
-	if(PORT0_INTR_MASK == (intrSrc & PORT0_INTR_MASK)){
+	if(PORT_INTR_MASK == (intrSrc & PORT_INTR_MASK)){
 		/* Clear the P0.4 interrupt */
 		Cy_GPIO_ClearInterrupt(CYBSP_USER_BTN_PORT, CYBSP_USER_BTN_NUM);
 		// Toggle LED
