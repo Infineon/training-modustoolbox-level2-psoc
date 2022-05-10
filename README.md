@@ -36,6 +36,17 @@ The following hardware is used for the exercises in this class:
 - CY8CKIT-028-TFT (TFT Display Shield Board)(optional)
 - Ammeter (for low power chapter exercises)
 
+## Videos
+
+Videos are available for many of the topics from this class. See the list below for links to the videos.
+
+| Title | Description |
+|-------|-------------|
+| [How-To: Starting with a new application](https://e.video-cdn.net/share?video-id=CCBLCmsjnWMTHiK2Y-FAEZ&player-id=2t2W2ykrDB_RisZ1QorEJU&channel-id=89141) | In this video we walk through creating a new application based off of the PSoC™ 6 Empty Application template. The video showcases both the Eclipse IDE for ModusToolbox™ and Microsoft Visual Studio Code. This How-To segment will serve a the initial step for following How-To videos. |
+| [How-To: Blinking an LED with a GPIO](https://e.video-cdn.net/share?video-id=DKF1YvrLhaWjf46JiqFAvD&player-id=2t2W2ykrDB_RisZ1QorEJU&channel-id=89141) | In this video we walk through developing a basic Blinky LED application using both the Hardware Abstraction Layer and the lower-level Peripheral Driver Libraries for PSoC™ 6. |
+| [How-To: Blinking an LED with a PWM](https://e.video-cdn.net/share?video-id=Brc4rJquuXCJ5YZFTLwwtn&player-id=2t2W2ykrDB_RisZ1QorEJU&channel-id=89141) | In this video we extend the concept of a Blinky LED with the capability of a hardware Timer/Counter/PWM peripheral. The walk through will illustrate using both the Hardware Abstraction Layer and the lower-level Peripheral Driver Libraries for PSoC™ 6. |
+| [How-To: Using a GPIO interrupt](https://e.video-cdn.net/share?video-id=8BzX3rBcfUo3nxaQTeVGxc&player-id=2t2W2ykrDB_RisZ1QorEJU&channel-id=89141) | In this video we walk through the development of an interrupt enabled GPIO button. The video illustrates the APIs and concepts with both the Hardware Abstraction Layer and the lower-level Peripheral Driver Libraries for PSoC™ 6. |
+
 ## References
 
 Additional information can be found at:
