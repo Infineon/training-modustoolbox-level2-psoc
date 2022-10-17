@@ -141,46 +141,46 @@ int main(void)
 	NVIC_EnableIRQ(DMA_INT_cfg.intrSrc);
 
 	/* Enable interrupt for DMA channel */
-	Cy_DMAC_SetInterruptMask(UART_DMA_HW,  CY_DMAC_INTR_CHAN_0);
+	Cy_DMAC_SetInterruptMask(DMA_UART_HW,  CY_DMAC_INTR_CHAN_0);
 
 	// Initialize the PING descriptor
-	dmac_init_status = Cy_DMAC_Descriptor_Init(UART_DMA_HW, UART_DMA_CHANNEL, CY_DMAC_DESCRIPTOR_PING, &UART_DMA_ping_config);
+	dmac_init_status = Cy_DMAC_Descriptor_Init(DMA_UART_HW, DMA_UART_CHANNEL, CY_DMAC_DESCRIPTOR_PING, &DMA_UART_ping_config);
 	if(dmac_init_status != CY_DMAC_SUCCESS){
 		CY_ASSERT(0);
 	}
 
 	// Initialize the PONG descriptor
-	dmac_init_status = Cy_DMAC_Descriptor_Init(UART_DMA_HW, UART_DMA_CHANNEL, CY_DMAC_DESCRIPTOR_PONG, &UART_DMA_pong_config);
+	dmac_init_status = Cy_DMAC_Descriptor_Init(DMA_UART_HW, DMA_UART_CHANNEL, CY_DMAC_DESCRIPTOR_PONG, &DMA_UART_pong_config);
 	if(dmac_init_status != CY_DMAC_SUCCESS){
 		CY_ASSERT(0);
 	}
 
 	/* Initialize Dma channel */
-	dmac_init_status = Cy_DMAC_Channel_Init(UART_DMA_HW, UART_DMA_CHANNEL, &UART_DMA_channel_config);
+	dmac_init_status = Cy_DMAC_Channel_Init(DMA_UART_HW, DMA_UART_CHANNEL, &DMA_UART_channel_config);
 	CY_ASSERT(dmac_init_status == CY_DMAC_SUCCESS);
 
 	/* Set source and destination for PING descriptor */
-	Cy_DMAC_Descriptor_SetSrcAddress(UART_DMA_HW, UART_DMA_CHANNEL, CY_DMAC_DESCRIPTOR_PING, (void *) pingBuffer);
-	Cy_DMAC_Descriptor_SetDstAddress(UART_DMA_HW, UART_DMA_CHANNEL, CY_DMAC_DESCRIPTOR_PING, (void *) &(DEBUG_UART_HW->TX_FIFO_WR));
+	Cy_DMAC_Descriptor_SetSrcAddress(DMA_UART_HW, DMA_UART_CHANNEL, CY_DMAC_DESCRIPTOR_PING, (void *) pingBuffer);
+	Cy_DMAC_Descriptor_SetDstAddress(DMA_UART_HW, DMA_UART_CHANNEL, CY_DMAC_DESCRIPTOR_PING, (void *) &(DEBUG_UART_HW->TX_FIFO_WR));
 
 	/* Set source and destination for PONG descriptor */
-	Cy_DMAC_Descriptor_SetSrcAddress(UART_DMA_HW, UART_DMA_CHANNEL, CY_DMAC_DESCRIPTOR_PONG, (void *) pongBuffer);
-	Cy_DMAC_Descriptor_SetDstAddress(UART_DMA_HW, UART_DMA_CHANNEL, CY_DMAC_DESCRIPTOR_PONG, (void *) &(DEBUG_UART_HW->TX_FIFO_WR));
+	Cy_DMAC_Descriptor_SetSrcAddress(DMA_UART_HW, DMA_UART_CHANNEL, CY_DMAC_DESCRIPTOR_PONG, (void *) pongBuffer);
+	Cy_DMAC_Descriptor_SetDstAddress(DMA_UART_HW, DMA_UART_CHANNEL, CY_DMAC_DESCRIPTOR_PONG, (void *) &(DEBUG_UART_HW->TX_FIFO_WR));
 
 	/* Validate the PING descriptor */
-	Cy_DMAC_Descriptor_SetState(UART_DMA_HW, UART_DMA_CHANNEL, CY_DMAC_DESCRIPTOR_PING, true);
+	Cy_DMAC_Descriptor_SetState(DMA_UART_HW, DMA_UART_CHANNEL, CY_DMAC_DESCRIPTOR_PING, true);
 
 	/* Validate the PONG descriptor */
-	Cy_DMAC_Descriptor_SetState(UART_DMA_HW, UART_DMA_CHANNEL, CY_DMAC_DESCRIPTOR_PONG, true);
+	Cy_DMAC_Descriptor_SetState(DMA_UART_HW, DMA_UART_CHANNEL, CY_DMAC_DESCRIPTOR_PONG, true);
 
 	/* Set PING descriptor as current descriptor for TxDma channel  */
-	Cy_DMAC_Channel_SetCurrentDescriptor(UART_DMA_HW, UART_DMA_CHANNEL, CY_DMAC_DESCRIPTOR_PING);
+	Cy_DMAC_Channel_SetCurrentDescriptor(DMA_UART_HW, DMA_UART_CHANNEL, CY_DMAC_DESCRIPTOR_PING);
 
 	/* Enable DMAC block */
-	Cy_DMAC_Enable(UART_DMA_HW);
+	Cy_DMAC_Enable(DMA_UART_HW);
 
 	/* Enable Dma channel */
-	Cy_DMAC_Channel_Enable(UART_DMA_HW, UART_DMA_CHANNEL);
+	Cy_DMAC_Channel_Enable(DMA_UART_HW, DMA_UART_CHANNEL);
 
 	/////////////////////////////////////////////////////////////////////////
 
@@ -246,39 +246,39 @@ void Isr_UART(void)
 void Isr_DMA(void)
 {
 	// If Ping is finished running, update its source
-	if(Cy_DMAC_Descriptor_GetResponse(UART_DMA_HW, UART_DMA_CHANNEL, CY_DMAC_DESCRIPTOR_PING) == CY_DMAC_DONE){
+	if(Cy_DMAC_Descriptor_GetResponse(DMA_UART_HW, DMA_UART_CHANNEL, CY_DMAC_DESCRIPTOR_PING) == CY_DMAC_DONE){
 
 		// Invalidate the descriptor before modifying it
-		Cy_DMAC_Descriptor_SetState(UART_DMA_HW, UART_DMA_CHANNEL, CY_DMAC_DESCRIPTOR_PING, false);
+		Cy_DMAC_Descriptor_SetState(DMA_UART_HW, DMA_UART_CHANNEL, CY_DMAC_DESCRIPTOR_PING, false);
 
 		// If Ping's source is pingBuffer set it to pingBuffer1, otherwise set it to pingBuffer
-		if(Cy_DMAC_Descriptor_GetSrcAddress(UART_DMA_HW, UART_DMA_CHANNEL, CY_DMAC_DESCRIPTOR_PING) == (void *) pingBuffer){
-			Cy_DMAC_Descriptor_SetSrcAddress(UART_DMA_HW, UART_DMA_CHANNEL, CY_DMAC_DESCRIPTOR_PING, (void *) pingBuffer1);
+		if(Cy_DMAC_Descriptor_GetSrcAddress(DMA_UART_HW, DMA_UART_CHANNEL, CY_DMAC_DESCRIPTOR_PING) == (void *) pingBuffer){
+			Cy_DMAC_Descriptor_SetSrcAddress(DMA_UART_HW, DMA_UART_CHANNEL, CY_DMAC_DESCRIPTOR_PING, (void *) pingBuffer1);
 		}
 		else{
-			Cy_DMAC_Descriptor_SetSrcAddress(UART_DMA_HW, UART_DMA_CHANNEL, CY_DMAC_DESCRIPTOR_PING, (void *) pingBuffer);
+			Cy_DMAC_Descriptor_SetSrcAddress(DMA_UART_HW, DMA_UART_CHANNEL, CY_DMAC_DESCRIPTOR_PING, (void *) pingBuffer);
 		}
 
 		// Validate the descriptor once we are done modifying it
-		Cy_DMAC_Descriptor_SetState(UART_DMA_HW, UART_DMA_CHANNEL, CY_DMAC_DESCRIPTOR_PING, true);
+		Cy_DMAC_Descriptor_SetState(DMA_UART_HW, DMA_UART_CHANNEL, CY_DMAC_DESCRIPTOR_PING, true);
 	}
 
 	// If Pong is finished running, update its source
-	else if(Cy_DMAC_Descriptor_GetResponse(UART_DMA_HW, UART_DMA_CHANNEL, CY_DMAC_DESCRIPTOR_PONG) == CY_DMAC_DONE){
+	else if(Cy_DMAC_Descriptor_GetResponse(DMA_UART_HW, DMA_UART_CHANNEL, CY_DMAC_DESCRIPTOR_PONG) == CY_DMAC_DONE){
 
 		// Invalidate the descriptor before modifying it
-		Cy_DMAC_Descriptor_SetState(UART_DMA_HW, UART_DMA_CHANNEL, CY_DMAC_DESCRIPTOR_PONG, false);
+		Cy_DMAC_Descriptor_SetState(DMA_UART_HW, DMA_UART_CHANNEL, CY_DMAC_DESCRIPTOR_PONG, false);
 
 		// If Pong's source is pongBuffer set it to pongBuffer1, otherwise set it to pongBuffer
-		if(Cy_DMAC_Descriptor_GetSrcAddress(UART_DMA_HW, UART_DMA_CHANNEL, CY_DMAC_DESCRIPTOR_PONG) == (void *) pongBuffer){
-			Cy_DMAC_Descriptor_SetSrcAddress(UART_DMA_HW, UART_DMA_CHANNEL, CY_DMAC_DESCRIPTOR_PONG, (void *) pongBuffer1);
+		if(Cy_DMAC_Descriptor_GetSrcAddress(DMA_UART_HW, DMA_UART_CHANNEL, CY_DMAC_DESCRIPTOR_PONG) == (void *) pongBuffer){
+			Cy_DMAC_Descriptor_SetSrcAddress(DMA_UART_HW, DMA_UART_CHANNEL, CY_DMAC_DESCRIPTOR_PONG, (void *) pongBuffer1);
 		}
 		else{
-			Cy_DMAC_Descriptor_SetSrcAddress(UART_DMA_HW, UART_DMA_CHANNEL, CY_DMAC_DESCRIPTOR_PONG, (void *) pongBuffer);
+			Cy_DMAC_Descriptor_SetSrcAddress(DMA_UART_HW, DMA_UART_CHANNEL, CY_DMAC_DESCRIPTOR_PONG, (void *) pongBuffer);
 		}
 
 		// Validate the descriptor once we are done modifying it
-		Cy_DMAC_Descriptor_SetState(UART_DMA_HW, UART_DMA_CHANNEL, CY_DMAC_DESCRIPTOR_PONG, true);
+		Cy_DMAC_Descriptor_SetState(DMA_UART_HW, DMA_UART_CHANNEL, CY_DMAC_DESCRIPTOR_PONG, true);
 	}
 
 	// Else there was some error
@@ -288,7 +288,7 @@ void Isr_DMA(void)
 	}
 
 	/* Clear Dma channel interrupt */
-	Cy_DMAC_ClearInterrupt(UART_DMA_HW, CY_DMAC_INTR_CHAN_0);
+	Cy_DMAC_ClearInterrupt(DMA_UART_HW, CY_DMAC_INTR_CHAN_0);
 }
 
 /* [] END OF FILE */

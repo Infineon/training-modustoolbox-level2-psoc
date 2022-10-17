@@ -59,19 +59,20 @@ int main(void)
     /* Enable global interrupts */
     __enable_irq();
 
-	/* Configure and enable the UART peripheral */
+    /* Configure and enable the UART peripheral */
 	Cy_SCB_UART_Init(UART_HW, &UART_config, &UART_context);
-	Cy_SCB_UART_Enable(UART_HW);
+	Cy_SCB_UART_Enable(SCB3);
 
-    for (;;){
-    	// If a 0 is received turn the LED off, if a 1 is received turn the LED on
-    	char charReceived = Cy_SCB_UART_Get(UART_HW);
-    	if(charReceived == '0'){
-    		Cy_GPIO_Clr(CYBSP_USER_LED_PORT, CYBSP_USER_LED_NUM);
-    	}
-    	else if (charReceived == '1'){
-    		Cy_GPIO_Set(CYBSP_USER_LED_PORT, CYBSP_USER_LED_NUM);
-    	}
+    for (;;)
+    {
+    	/* If a 0 is received turn the LED off, if a 1 is received turn the LED on */
+        	char charReceived = Cy_SCB_UART_Get(UART_HW);
+        	if(charReceived == '0'){
+        		Cy_GPIO_Clr(CYBSP_USER_LED_PORT, CYBSP_USER_LED_NUM);
+        	}
+        	else if (charReceived == '1'){
+        		Cy_GPIO_Set(CYBSP_USER_LED_PORT, CYBSP_USER_LED_NUM);
+        	}
     }
 }
 

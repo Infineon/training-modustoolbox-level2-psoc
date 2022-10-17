@@ -28,6 +28,14 @@
 # Basic Configuration
 ################################################################################
 
+#Type of MTB Makefile Options include:
+#
+#COMBINED    -- Top Level Makefile usually for single standalone application
+#APPLICATION -- Top Level Common Makefile usually for multi-project in application
+#PROJECT     -- Project Makefile for each project under Application
+#
+MTB_TYPE=COMBINED
+
 # Target board/hardware (BSP).
 # To change the target, it is recommended to use the Library manager 
 # ('make modlibs' from command line), which will also update Eclipse IDE launch 
@@ -40,11 +48,11 @@ TARGET=CY8CKIT-062S2-43012
 # 
 # If APPNAME is edited, ensure to update or regenerate launch 
 # configurations for your IDE.
-APPNAME=mtb-example-psoc6-empty-app
+APPNAME=mtb-example-psoc4-empty-app
 
 # Name of toolchain to use. Options include:
 #
-# GCC_ARM -- GCC provided with ModusToolbox IDE
+# GCC_ARM -- GCC 7.2.1, provided with ModusToolbox IDE
 # ARM     -- ARM Compiler (must be installed separately)
 # IAR     -- IAR Compiler (must be installed separately)
 #
@@ -79,10 +87,10 @@ VERBOSE=
 # ... then code in directories named COMPONENT_foo and COMPONENT_bar will be
 # added to the build
 #
-COMPONENTS += CUSTOM_DESIGN_MODUS
+COMPONENTS += 
 
 # Like COMPONENTS, but disable optional code that was enabled by default.
-DISABLE_COMPONENTS += BSP_DESIGN_MODUS
+DISABLE_COMPONENTS += 
 
 # By default the build system automatically looks in the Makefile's directory
 # tree for source code and builds it. The SOURCES variable can be used to
@@ -95,10 +103,7 @@ SOURCES=
 INCLUDES=
 
 # Add additional defines to the build process (without a leading -D).
-DEFINES=
-
-# Select softfp or hardfp floating point. Default is softfp.
-VFP_SELECT=
+DEFINES= 
 
 # Additional / custom C compiler flags.
 #

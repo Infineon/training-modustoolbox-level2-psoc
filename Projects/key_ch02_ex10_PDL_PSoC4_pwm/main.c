@@ -56,7 +56,7 @@ int main(void)
     /* Enable global interrupts */
     __enable_irq();
 
-    // Initialize the TCPWM block tcpwm_0_cnt_5_config
+    // Initialize the TCPWM block
 	Cy_TCPWM_PWM_Init(PWM_HW, PWM_NUM, &PWM_config);
 	// Enable the TCPWM block
 	Cy_TCPWM_PWM_Enable(PWM_HW, PWM_NUM);

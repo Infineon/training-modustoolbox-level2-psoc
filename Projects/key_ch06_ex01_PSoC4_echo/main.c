@@ -92,30 +92,30 @@ int main(void)
 	cy_en_dmac_status_t dmac_init_status;
 
 	// Initialize the PING descriptor
-	dmac_init_status = Cy_DMAC_Descriptor_Init(UART_DMA_HW, UART_DMA_CHANNEL, CY_DMAC_DESCRIPTOR_PING, &UART_DMA_ping_config);
+	dmac_init_status = Cy_DMAC_Descriptor_Init(DMA_UART_HW, DMA_UART_CHANNEL, CY_DMAC_DESCRIPTOR_PING, &DMA_UART_ping_config);
 	if(dmac_init_status != CY_DMAC_SUCCESS){
 		CY_ASSERT(0);
 	}
 
 	/* Initialize Dma channel */
-	dmac_init_status = Cy_DMAC_Channel_Init(UART_DMA_HW, UART_DMA_CHANNEL, &UART_DMA_channel_config);
+	dmac_init_status = Cy_DMAC_Channel_Init(DMA_UART_HW, DMA_UART_CHANNEL, &DMA_UART_channel_config);
 	CY_ASSERT(dmac_init_status == CY_DMAC_SUCCESS);
 
 	/* Set source and destination for PING descriptor */
-	Cy_DMAC_Descriptor_SetSrcAddress(UART_DMA_HW, UART_DMA_CHANNEL, CY_DMAC_DESCRIPTOR_PING, (void *) &(DEBUG_UART_HW->RX_FIFO_RD));
-	Cy_DMAC_Descriptor_SetDstAddress(UART_DMA_HW, UART_DMA_CHANNEL, CY_DMAC_DESCRIPTOR_PING, (void *) &(DEBUG_UART_HW->TX_FIFO_WR));
+	Cy_DMAC_Descriptor_SetSrcAddress(DMA_UART_HW, DMA_UART_CHANNEL, CY_DMAC_DESCRIPTOR_PING, (void *) &(DEBUG_UART_HW->RX_FIFO_RD));
+	Cy_DMAC_Descriptor_SetDstAddress(DMA_UART_HW, DMA_UART_CHANNEL, CY_DMAC_DESCRIPTOR_PING, (void *) &(DEBUG_UART_HW->TX_FIFO_WR));
 
 	/* Validate the PING descriptor */
-	Cy_DMAC_Descriptor_SetState(UART_DMA_HW, UART_DMA_CHANNEL, CY_DMAC_DESCRIPTOR_PING, true);
+	Cy_DMAC_Descriptor_SetState(DMA_UART_HW, DMA_UART_CHANNEL, CY_DMAC_DESCRIPTOR_PING, true);
 
 	/* Set PING descriptor as current descriptor for TxDma channel  */
-	Cy_DMAC_Channel_SetCurrentDescriptor(UART_DMA_HW, UART_DMA_CHANNEL, CY_DMAC_DESCRIPTOR_PING);
+	Cy_DMAC_Channel_SetCurrentDescriptor(DMA_UART_HW, DMA_UART_CHANNEL, CY_DMAC_DESCRIPTOR_PING);
 
 	/* Enable DMAC block */
-	Cy_DMAC_Enable(UART_DMA_HW);
+	Cy_DMAC_Enable(DMA_UART_HW);
 
 	/* Enable Dma channel */
-	Cy_DMAC_Channel_Enable(UART_DMA_HW, UART_DMA_CHANNEL);
+	Cy_DMAC_Channel_Enable(DMA_UART_HW, DMA_UART_CHANNEL);
 
 	/////////////////////////////////////////////////////////////////////////
 

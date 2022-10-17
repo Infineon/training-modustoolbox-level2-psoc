@@ -95,7 +95,7 @@ int main(void)
     {
     	/* Read the ADC conversion result for corresponding ADC channel. Repeat as necessary. */
 		adc_out = cyhal_adc_read_uv(&adc_chan_0_obj);
-		printf("%d\n", adc_out);
+		printf("%d\r\n", adc_out);
 		cyhal_system_delay_ms(100);
     }
 }

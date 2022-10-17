@@ -105,57 +105,57 @@ int main(void)
 	cy_en_dma_status_t dma_init_status;
 
 	/* Initialize descriptor 0 */
-	dma_init_status = Cy_DMA_Descriptor_Init(&MY_DMA_Descriptor_0, &MY_DMA_Descriptor_0_config);
+	dma_init_status = Cy_DMA_Descriptor_Init(&DMA_UART_Descriptor_0, &DMA_UART_Descriptor_0_config);
 	if(dma_init_status != CY_DMA_SUCCESS){
 		CY_ASSERT(0);
 	}
 
 	/* Initialize descriptor 1 */
-	dma_init_status = Cy_DMA_Descriptor_Init(&MY_DMA_Descriptor_1, &MY_DMA_Descriptor_1_config);
+	dma_init_status = Cy_DMA_Descriptor_Init(&DMA_UART_Descriptor_1, &DMA_UART_Descriptor_1_config);
 	if(dma_init_status != CY_DMA_SUCCESS){
 		CY_ASSERT(0);
 	}
 
 	/* Initialize descriptor 2 */
-	dma_init_status = Cy_DMA_Descriptor_Init(&MY_DMA_Descriptor_2, &MY_DMA_Descriptor_2_config);
+	dma_init_status = Cy_DMA_Descriptor_Init(&DMA_UART_Descriptor_2, &DMA_UART_Descriptor_2_config);
 	if(dma_init_status != CY_DMA_SUCCESS){
 		CY_ASSERT(0);
 	}
 
 	/* Initialize descriptor 3 */
-	dma_init_status = Cy_DMA_Descriptor_Init(&MY_DMA_Descriptor_3, &MY_DMA_Descriptor_3_config);
+	dma_init_status = Cy_DMA_Descriptor_Init(&DMA_UART_Descriptor_3, &DMA_UART_Descriptor_3_config);
 	if(dma_init_status != CY_DMA_SUCCESS){
 		CY_ASSERT(0);
 	}
 
 	/* Set source and destination for descriptor 0 */
-	Cy_DMA_Descriptor_SetSrcAddress(&MY_DMA_Descriptor_0, (void *) buffer0);
-	Cy_DMA_Descriptor_SetDstAddress(&MY_DMA_Descriptor_0, (void *) &(DEBUG_UART_HW->TX_FIFO_WR));
+	Cy_DMA_Descriptor_SetSrcAddress(&DMA_UART_Descriptor_0, (void *) buffer0);
+	Cy_DMA_Descriptor_SetDstAddress(&DMA_UART_Descriptor_0, (void *) &(DEBUG_UART_HW->TX_FIFO_WR));
 
 	/* Set source and destination for descriptor 1 */
-	Cy_DMA_Descriptor_SetSrcAddress(&MY_DMA_Descriptor_1, (void *) buffer1);
-	Cy_DMA_Descriptor_SetDstAddress(&MY_DMA_Descriptor_1, (void *) &(DEBUG_UART_HW->TX_FIFO_WR));
+	Cy_DMA_Descriptor_SetSrcAddress(&DMA_UART_Descriptor_1, (void *) buffer1);
+	Cy_DMA_Descriptor_SetDstAddress(&DMA_UART_Descriptor_1, (void *) &(DEBUG_UART_HW->TX_FIFO_WR));
 
 	/* Set source and destination for descriptor 2 */
-	Cy_DMA_Descriptor_SetSrcAddress(&MY_DMA_Descriptor_2, (void *) buffer2);
-	Cy_DMA_Descriptor_SetDstAddress(&MY_DMA_Descriptor_2, (void *) &(DEBUG_UART_HW->TX_FIFO_WR));
+	Cy_DMA_Descriptor_SetSrcAddress(&DMA_UART_Descriptor_2, (void *) buffer2);
+	Cy_DMA_Descriptor_SetDstAddress(&DMA_UART_Descriptor_2, (void *) &(DEBUG_UART_HW->TX_FIFO_WR));
 
 	/* Set source and destination for descriptor 3 */
-	Cy_DMA_Descriptor_SetSrcAddress(&MY_DMA_Descriptor_3, (void *) buffer3);
-	Cy_DMA_Descriptor_SetDstAddress(&MY_DMA_Descriptor_3, (void *) &(DEBUG_UART_HW->TX_FIFO_WR));
+	Cy_DMA_Descriptor_SetSrcAddress(&DMA_UART_Descriptor_3, (void *) buffer3);
+	Cy_DMA_Descriptor_SetDstAddress(&DMA_UART_Descriptor_3, (void *) &(DEBUG_UART_HW->TX_FIFO_WR));
 
 	/* Initialize DMA channel */
-	dma_init_status = Cy_DMA_Channel_Init(MY_DMA_HW, MY_DMA_CHANNEL, &MY_DMA_channelConfig);
+	dma_init_status = Cy_DMA_Channel_Init(DMA_UART_HW, DMA_UART_CHANNEL, &DMA_UART_channelConfig);
 	CY_ASSERT(dma_init_status == CY_DMA_SUCCESS);
 
 	/* Set Descriptor for DMA Channel */
-	Cy_DMA_Channel_SetDescriptor(MY_DMA_HW, MY_DMA_CHANNEL, &MY_DMA_Descriptor_0);
+	Cy_DMA_Channel_SetDescriptor(DMA_UART_HW, DMA_UART_CHANNEL, &DMA_UART_Descriptor_0);
 
 	/* Enable DMA block */
-	Cy_DMA_Enable(MY_DMA_HW);
+	Cy_DMA_Enable(DMA_UART_HW);
 
 	/* Enable Dma channel */
-	Cy_DMA_Channel_Enable(MY_DMA_HW, MY_DMA_CHANNEL);
+	Cy_DMA_Channel_Enable(DMA_UART_HW, DMA_UART_CHANNEL);
 
 	/////////////////////////////////////////////////////////////////////////
 

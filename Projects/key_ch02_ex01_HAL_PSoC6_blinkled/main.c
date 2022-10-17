@@ -4,8 +4,7 @@
 * Description: This is the source code for the Empty PSoC6 Application
 *              for ModusToolbox.
 *
-* Related Document: See README.md
-*
+* Related Document: See Readme.md
 *
 *******************************************************************************
 * (c) 2019-2020, Cypress Semiconductor Corporation. All rights reserved.

@@ -44,12 +44,12 @@
 
 #define PORT_INTR_MASK  (0x00000001UL << CYBSP_USER_BTN_PORT_NUM)
 
-void Interrupt_Handler_Port0(void){
+void Interrupt_Handler(void){
 	// Get interrupt cause
 	uint32_t intrSrc = Cy_GPIO_GetInterruptCause0();
-	/* Check if the interrupt was from port 0 */
+	/* Check if the interrupt was from the button's port */
 	if(PORT_INTR_MASK == (intrSrc & PORT_INTR_MASK)){
-		/* Clear the P0.4 interrupt */
+		/* Clear the interrupt */
 		Cy_GPIO_ClearInterrupt(CYBSP_USER_BTN_PORT, CYBSP_USER_BTN_NUM);
 		// Toggle LED
 		Cy_GPIO_Inv(CYBSP_USER_LED_PORT, CYBSP_USER_LED_NUM);
@@ -71,23 +71,22 @@ int main(void)
     __enable_irq();
 
     // Interrupt config structure
-    cy_stc_sysint_t intrCfg =
-	{
-		/*.intrSrc =*/ CYBSP_USER_BTN_IRQ,
-		/*.intrPriority =*/ 3UL
-	};
+     cy_stc_sysint_t intrCfg =
+ 	{
+ 		/*.intrSrc =*/ CYBSP_USER_BTN_IRQ,
+ 		/*.intrPriority =*/ 3UL
+ 	};
 
-    // Set interrupt mask
-    Cy_GPIO_SetInterruptMask(CYBSP_USER_BTN_PORT, CYBSP_USER_BTN_NUM, 1UL);
-    /* Initialize the interrupt with vector at Interrupt_Handler_Port0() */
-	Cy_SysInt_Init(&intrCfg, &Interrupt_Handler_Port0);
-	// Send the button through the glitch filter
-	Cy_GPIO_SetFilter(CYBSP_USER_BTN_PORT, CYBSP_USER_BTN_NUM);
-	// Falling edge interrupt
-	Cy_GPIO_SetInterruptEdge(CYBSP_USER_BTN_PORT, CYBSP_USER_BTN_NUM, CY_GPIO_INTR_FALLING);
-	/* Enable the interrupt */
-	NVIC_EnableIRQ(intrCfg.intrSrc);
+     /* Initialize the interrupt with vector for Interrupt_Handler */
+ 	Cy_SysInt_Init(&intrCfg, &Interrupt_Handler);
+ 	/* Send the button through the glitch filter */
+ 	Cy_GPIO_SetFilter(CYBSP_USER_BTN_PORT, CYBSP_USER_BTN_NUM);
+ 	/* Enable the interrupt */
+ 	NVIC_EnableIRQ(intrCfg.intrSrc);
 
-    for (;;){}
+    for (;;)
+    {
+    	/* Do nothing */
+    }
 }
 /* [] END OF FILE */

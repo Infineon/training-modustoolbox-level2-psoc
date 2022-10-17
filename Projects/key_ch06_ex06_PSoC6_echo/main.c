@@ -91,27 +91,27 @@ int main(void)
 	cy_en_dma_status_t dma_init_status;
 
 	/* Initialize descriptor 0 */
-	dma_init_status = Cy_DMA_Descriptor_Init(&UART_DMA_Descriptor_0, &UART_DMA_Descriptor_0_config);
+	dma_init_status = Cy_DMA_Descriptor_Init(&DMA_UART_Descriptor_0, &DMA_UART_Descriptor_0_config);
 	if(dma_init_status != CY_DMA_SUCCESS){
 		CY_ASSERT(0);
 	}
 
 	/* Set source and destination for descriptor 0 */
-	Cy_DMA_Descriptor_SetSrcAddress(&UART_DMA_Descriptor_0, (void *) &(DEBUG_UART_HW->RX_FIFO_RD));
-	Cy_DMA_Descriptor_SetDstAddress(&UART_DMA_Descriptor_0, (void *) &(DEBUG_UART_HW->TX_FIFO_WR));
+	Cy_DMA_Descriptor_SetSrcAddress(&DMA_UART_Descriptor_0, (void *) &(DEBUG_UART_HW->RX_FIFO_RD));
+	Cy_DMA_Descriptor_SetDstAddress(&DMA_UART_Descriptor_0, (void *) &(DEBUG_UART_HW->TX_FIFO_WR));
 
 	/* Initialize DMA channel */
-	dma_init_status = Cy_DMA_Channel_Init(UART_DMA_HW, UART_DMA_CHANNEL, &UART_DMA_channelConfig);
+	dma_init_status = Cy_DMA_Channel_Init(DMA_UART_HW, DMA_UART_CHANNEL, &DMA_UART_channelConfig);
 	CY_ASSERT(dma_init_status == CY_DMA_SUCCESS);
 
 	/* Set Descriptor for DMA Channel */
-	Cy_DMA_Channel_SetDescriptor(UART_DMA_HW, UART_DMA_CHANNEL, &UART_DMA_Descriptor_0);
+	Cy_DMA_Channel_SetDescriptor(DMA_UART_HW, DMA_UART_CHANNEL, &DMA_UART_Descriptor_0);
 
 	/* Enable DMA block */
-	Cy_DMA_Enable(UART_DMA_HW);
+	Cy_DMA_Enable(DMA_UART_HW);
 
 	/* Enable Dma channel */
-	Cy_DMA_Channel_Enable(UART_DMA_HW, UART_DMA_CHANNEL);
+	Cy_DMA_Channel_Enable(DMA_UART_HW, DMA_UART_CHANNEL);
 
 	/////////////////////////////////////////////////////////////////////////
 

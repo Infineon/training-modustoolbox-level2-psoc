@@ -85,7 +85,7 @@ int main(void)
 			microVolts = Cy_SAR_CountsTo_uVolts(ADC_HW, 0, ADCresult);
 		}
 		char stringBuffer[20];
-		sprintf(stringBuffer, "%ld\n", microVolts);
+		sprintf(stringBuffer, "%ld\r\n", microVolts);
 		Cy_SCB_UART_PutString(UART_HW, stringBuffer);
 		Cy_SysLib_Delay(100);
     }

@@ -162,9 +162,9 @@ int main(void)
 	// Motion sensor device configuration struct
     struct bmi160_dev motionSensor = {
 		.id = BMI160_I2C_ADDR,
-		.interface = BMI160_I2C_INTF,
-		.read         = (bmi160_com_fptr_t)i2c_read_bytes,
-		.write        = (bmi160_com_fptr_t)i2c_write_bytes,
+		.intf = BMI160_I2C_INTF,
+		.read         = (bmi160_read_fptr_t)i2c_read_bytes,
+		.write        = (bmi160_write_fptr_t)i2c_write_bytes,
 		.delay_ms     = delay_wrapper
 
     };

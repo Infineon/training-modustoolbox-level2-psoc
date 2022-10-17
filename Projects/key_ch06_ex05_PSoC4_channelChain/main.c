@@ -129,59 +129,59 @@ int main(void)
 	NVIC_EnableIRQ(DMA_INT_cfg.intrSrc);
 
 	/* Enable interrupt for DMA channel */
-	Cy_DMAC_SetInterruptMask(RX_DMA_HW,  CY_DMAC_INTR_CHAN_0);
+	Cy_DMAC_SetInterruptMask(DMA_RX_HW,  CY_DMAC_INTR_CHAN_0);
 
 	/* Enable interrupt for DMA channel */
-	Cy_DMAC_SetInterruptMask(RX_DMA_HW,  CY_DMAC_INTR_CHAN_1);
+	Cy_DMAC_SetInterruptMask(DMA_RX_HW,  CY_DMAC_INTR_CHAN_1);
 
 	// Initialize the RX PING descriptor
-	dmac_init_status = Cy_DMAC_Descriptor_Init(RX_DMA_HW, RX_DMA_CHANNEL, CY_DMAC_DESCRIPTOR_PING, &RX_DMA_ping_config);
+	dmac_init_status = Cy_DMAC_Descriptor_Init(DMA_RX_HW, DMA_RX_CHANNEL, CY_DMAC_DESCRIPTOR_PING, &DMA_RX_ping_config);
 	if(dmac_init_status != CY_DMAC_SUCCESS){
 		CY_ASSERT(0);
 	}
 
 	// Initialize the TX PING descriptor
-	dmac_init_status = Cy_DMAC_Descriptor_Init(TX_DMA_HW, TX_DMA_CHANNEL, CY_DMAC_DESCRIPTOR_PING, &TX_DMA_ping_config);
+	dmac_init_status = Cy_DMAC_Descriptor_Init(DMA_TX_HW, DMA_TX_CHANNEL, CY_DMAC_DESCRIPTOR_PING, &DMA_TX_ping_config);
 	if(dmac_init_status != CY_DMAC_SUCCESS){
 		CY_ASSERT(0);
 	}
 
 	/* Initialize RX Dma channel */
-	dmac_init_status = Cy_DMAC_Channel_Init(RX_DMA_HW, RX_DMA_CHANNEL, &RX_DMA_channel_config);
+	dmac_init_status = Cy_DMAC_Channel_Init(DMA_RX_HW, DMA_RX_CHANNEL, &DMA_RX_channel_config);
 	CY_ASSERT(dmac_init_status == CY_DMAC_SUCCESS);
 
 	/* Initialize TX Dma channel */
-	dmac_init_status = Cy_DMAC_Channel_Init(TX_DMA_HW, TX_DMA_CHANNEL, &TX_DMA_channel_config);
+	dmac_init_status = Cy_DMAC_Channel_Init(DMA_TX_HW, DMA_TX_CHANNEL, &DMA_TX_channel_config);
 	CY_ASSERT(dmac_init_status == CY_DMAC_SUCCESS);
 
 	/* Set source and destination for RX PING descriptor */
-	Cy_DMAC_Descriptor_SetSrcAddress(RX_DMA_HW, RX_DMA_CHANNEL, CY_DMAC_DESCRIPTOR_PING, (void *) &(DEBUG_UART_HW->RX_FIFO_RD));
-	Cy_DMAC_Descriptor_SetDstAddress(RX_DMA_HW, RX_DMA_CHANNEL, CY_DMAC_DESCRIPTOR_PING, (void *) &buffer);
+	Cy_DMAC_Descriptor_SetSrcAddress(DMA_RX_HW, DMA_RX_CHANNEL, CY_DMAC_DESCRIPTOR_PING, (void *) &(DEBUG_UART_HW->RX_FIFO_RD));
+	Cy_DMAC_Descriptor_SetDstAddress(DMA_RX_HW, DMA_RX_CHANNEL, CY_DMAC_DESCRIPTOR_PING, (void *) &buffer);
 
 	/* Set source and destination for TX PING descriptor */
-	Cy_DMAC_Descriptor_SetSrcAddress(TX_DMA_HW, TX_DMA_CHANNEL, CY_DMAC_DESCRIPTOR_PING, (void *) &buffer);
-	Cy_DMAC_Descriptor_SetDstAddress(TX_DMA_HW, TX_DMA_CHANNEL, CY_DMAC_DESCRIPTOR_PING, (void *) &(DEBUG_UART_HW->TX_FIFO_WR));
+	Cy_DMAC_Descriptor_SetSrcAddress(DMA_TX_HW, DMA_TX_CHANNEL, CY_DMAC_DESCRIPTOR_PING, (void *) &buffer);
+	Cy_DMAC_Descriptor_SetDstAddress(DMA_TX_HW, DMA_TX_CHANNEL, CY_DMAC_DESCRIPTOR_PING, (void *) &(DEBUG_UART_HW->TX_FIFO_WR));
 
 	/* Validate the RX PING descriptor */
-	Cy_DMAC_Descriptor_SetState(RX_DMA_HW, RX_DMA_CHANNEL, CY_DMAC_DESCRIPTOR_PING, true);
+	Cy_DMAC_Descriptor_SetState(DMA_RX_HW, DMA_RX_CHANNEL, CY_DMAC_DESCRIPTOR_PING, true);
 
 	/* Validate the TX PING descriptor */
-	Cy_DMAC_Descriptor_SetState(TX_DMA_HW, TX_DMA_CHANNEL, CY_DMAC_DESCRIPTOR_PING, true);
+	Cy_DMAC_Descriptor_SetState(DMA_TX_HW, DMA_TX_CHANNEL, CY_DMAC_DESCRIPTOR_PING, true);
 
 	/* Set PING descriptor as current descriptor for RX Dma channel  */
-	Cy_DMAC_Channel_SetCurrentDescriptor(RX_DMA_HW, RX_DMA_CHANNEL, CY_DMAC_DESCRIPTOR_PING);
+	Cy_DMAC_Channel_SetCurrentDescriptor(DMA_RX_HW, DMA_RX_CHANNEL, CY_DMAC_DESCRIPTOR_PING);
 
 	/* Set PING descriptor as current descriptor for TX Dma channel  */
-	Cy_DMAC_Channel_SetCurrentDescriptor(TX_DMA_HW, TX_DMA_CHANNEL, CY_DMAC_DESCRIPTOR_PING);
+	Cy_DMAC_Channel_SetCurrentDescriptor(DMA_TX_HW, DMA_TX_CHANNEL, CY_DMAC_DESCRIPTOR_PING);
 
 	/* Enable DMAC block */
-	Cy_DMAC_Enable(RX_DMA_HW);
+	Cy_DMAC_Enable(DMA_RX_HW);
 
 	/* Enable RX Dma channel */
-	Cy_DMAC_Channel_Enable(RX_DMA_HW, RX_DMA_CHANNEL);
+	Cy_DMAC_Channel_Enable(DMA_RX_HW, DMA_RX_CHANNEL);
 
 	/* Enable TX Dma channel */
-	Cy_DMAC_Channel_Enable(TX_DMA_HW, TX_DMA_CHANNEL);
+	Cy_DMAC_Channel_Enable(DMA_TX_HW, DMA_TX_CHANNEL);
 
 	/////////////////////////////////////////////////////////////////////////
 
@@ -247,19 +247,19 @@ void Isr_UART(void)
 void Isr_DMA(void)
 {
 	/* If channel 0 triggered the interrupt */
-	if ((CY_DMAC_INTR_CHAN_0 & Cy_DMAC_GetInterruptStatusMasked(RX_DMA_HW)) > 0U){
-		Cy_DMAC_ClearInterrupt(RX_DMA_HW, CY_DMAC_INTR_CHAN_0); // Clear the interrupt
+	if ((CY_DMAC_INTR_CHAN_0 & Cy_DMAC_GetInterruptStatusMasked(DMA_RX_HW)) > 0U){
+		Cy_DMAC_ClearInterrupt(DMA_RX_HW, CY_DMAC_INTR_CHAN_0); // Clear the interrupt
 		// Make sure the transfer completed successfully
-		if(Cy_DMAC_Descriptor_GetResponse(RX_DMA_HW, RX_DMA_CHANNEL, CY_DMAC_DESCRIPTOR_PING) != CY_DMAC_DONE){
+		if(Cy_DMAC_Descriptor_GetResponse(DMA_RX_HW, DMA_RX_CHANNEL, CY_DMAC_DESCRIPTOR_PING) != CY_DMAC_DONE){
 			Cy_SCB_UART_PutString(DEBUG_UART_HW, "DMA Error Occurred. Halting Execution.\r\n");
 			CY_ASSERT(0);
 		}
 	}
 	/* If channel 1 triggered the interrupt */
-	if ((CY_DMAC_INTR_CHAN_1 & Cy_DMAC_GetInterruptStatusMasked(TX_DMA_HW)) > 0U){
-		Cy_DMAC_ClearInterrupt(TX_DMA_HW, CY_DMAC_INTR_CHAN_1); // Clear the interrupt
+	if ((CY_DMAC_INTR_CHAN_1 & Cy_DMAC_GetInterruptStatusMasked(DMA_TX_HW)) > 0U){
+		Cy_DMAC_ClearInterrupt(DMA_TX_HW, CY_DMAC_INTR_CHAN_1); // Clear the interrupt
 		// Make sure the transfer completed successfully
-		if(Cy_DMAC_Descriptor_GetResponse(TX_DMA_HW, TX_DMA_CHANNEL, CY_DMAC_DESCRIPTOR_PING) != CY_DMAC_DONE){
+		if(Cy_DMAC_Descriptor_GetResponse(DMA_TX_HW, DMA_TX_CHANNEL, CY_DMAC_DESCRIPTOR_PING) != CY_DMAC_DONE){
 			Cy_SCB_UART_PutString(DEBUG_UART_HW, "DMA Error Occurred. Halting Execution.\r\n");
 			CY_ASSERT(0);
 		}

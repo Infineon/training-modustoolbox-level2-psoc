@@ -61,15 +61,15 @@ int main(void)
 
     /* Configure and enable the UART peripheral */
 	Cy_SCB_UART_Init(UART_HW, &UART_config, &UART_context);
-	Cy_SCB_UART_Enable(SCB3);
+	Cy_SCB_UART_Enable(UART_HW);
 
     for (;;)
     {
     	Cy_GPIO_Set(CYBSP_USER_LED_PORT, CYBSP_USER_LED_NUM);
-    	Cy_SCB_UART_PutString(SCB3, "LED ON\n");
+    	Cy_SCB_UART_PutString(UART_HW, "LED ON\n");
     	Cy_SysLib_Delay(250U);
     	Cy_GPIO_Clr(CYBSP_USER_LED_PORT, CYBSP_USER_LED_NUM);
-    	Cy_SCB_UART_PutString(SCB3, "LED OFF\n");
+    	Cy_SCB_UART_PutString(UART_HW, "LED OFF\n");
 		Cy_SysLib_Delay(250U);
     }
 }

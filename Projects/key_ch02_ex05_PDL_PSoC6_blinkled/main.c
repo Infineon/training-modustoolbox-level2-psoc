@@ -1,14 +1,14 @@
 /******************************************************************************
 * File Name:   main.c
 *
-* Description: This is the source code for the Empty PSoC6 Application
+* Description: This is the source code for the Empty PSoC4  Application
 *              for ModusToolbox.
 *
 * Related Document: See README.md
 *
 *
 *******************************************************************************
-* (c) 2019-2021, Cypress Semiconductor Corporation. All rights reserved.
+* (c) (2020), Cypress Semiconductor Corporation. All rights reserved.
 *******************************************************************************
 * This software, including source code, documentation and related materials
 * ("Software"), is owned by Cypress Semiconductor Corporation or one of its
@@ -41,7 +41,6 @@
 
 #include "cy_pdl.h"
 #include "cybsp.h"
-
 
 int main(void)
 {

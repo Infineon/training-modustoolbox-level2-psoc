@@ -108,7 +108,7 @@ int main(void)
 	/* DMA interrupt initialization structure */
 	cy_stc_sysint_t DMA_INT_cfg =
 	{
-		.intrSrc      = (IRQn_Type)UART_DMA_IRQ,
+		.intrSrc      = (IRQn_Type)DMA_UART_IRQ,
 		.intrPriority = DMA_INT_PRIORITY,
 	};
 
@@ -117,30 +117,30 @@ int main(void)
 	NVIC_EnableIRQ(DMA_INT_cfg.intrSrc);
 
 	/* Enable interrupt for DMA channel */
-	Cy_DMA_Channel_SetInterruptMask(UART_DMA_HW, UART_DMA_CHANNEL, CY_DMA_INTR_MASK);
+	Cy_DMA_Channel_SetInterruptMask(DMA_UART_HW, DMA_UART_CHANNEL, CY_DMA_INTR_MASK);
 
 	/* Initialize descriptor 0 */
-	dma_init_status = Cy_DMA_Descriptor_Init(&UART_DMA_Descriptor_0, &UART_DMA_Descriptor_0_config);
+	dma_init_status = Cy_DMA_Descriptor_Init(&DMA_UART_Descriptor_0, &DMA_UART_Descriptor_0_config);
 	if(dma_init_status != CY_DMA_SUCCESS){
 		CY_ASSERT(0);
 	}
 
 	/* Set source and destination for descriptor 0 */
-	Cy_DMA_Descriptor_SetSrcAddress(&UART_DMA_Descriptor_0, (void *) &(DEBUG_UART_HW->RX_FIFO_RD));
-	Cy_DMA_Descriptor_SetDstAddress(&UART_DMA_Descriptor_0, (void *) buffer);
+	Cy_DMA_Descriptor_SetSrcAddress(&DMA_UART_Descriptor_0, (void *) &(DEBUG_UART_HW->RX_FIFO_RD));
+	Cy_DMA_Descriptor_SetDstAddress(&DMA_UART_Descriptor_0, (void *) buffer);
 
 	/* Initialize DMA channel */
-	dma_init_status = Cy_DMA_Channel_Init(UART_DMA_HW, UART_DMA_CHANNEL, &UART_DMA_channelConfig);
+	dma_init_status = Cy_DMA_Channel_Init(DMA_UART_HW, DMA_UART_CHANNEL, &DMA_UART_channelConfig);
 	CY_ASSERT(dma_init_status == CY_DMA_SUCCESS);
 
 	/* Set Descriptor for DMA Channel */
-	Cy_DMA_Channel_SetDescriptor(UART_DMA_HW, UART_DMA_CHANNEL, &UART_DMA_Descriptor_0);
+	Cy_DMA_Channel_SetDescriptor(DMA_UART_HW, DMA_UART_CHANNEL, &DMA_UART_Descriptor_0);
 
 	/* Enable DMA block */
-	Cy_DMA_Enable(UART_DMA_HW);
+	Cy_DMA_Enable(DMA_UART_HW);
 
 	/* Enable Dma channel */
-	Cy_DMA_Channel_Enable(UART_DMA_HW, UART_DMA_CHANNEL);
+	Cy_DMA_Channel_Enable(DMA_UART_HW, DMA_UART_CHANNEL);
 
 	/////////////////////////////////////////////////////////////////////////
 
@@ -175,7 +175,7 @@ int main(void)
 void Isr_DMA(void)
 {
 	/* Check if the Dma channel response is successful for current transfer */
-	if(!(CY_DMA_INTR_CAUSE_COMPLETION == Cy_DMA_Channel_GetStatus(UART_DMA_HW, UART_DMA_CHANNEL))){
+	if(!(CY_DMA_INTR_CAUSE_COMPLETION == Cy_DMA_Channel_GetStatus(DMA_UART_HW, DMA_UART_CHANNEL))){
 		Cy_SCB_UART_PutString(DEBUG_UART_HW, "DMA Error Occurred. Halting Execution.\r\n");
 		CY_ASSERT(0);
 	}
@@ -188,6 +188,6 @@ void Isr_DMA(void)
 	Cy_SCB_UART_PutArray(DEBUG_UART_HW, (void*)reversedBuffer, 5);
 
 	/* Clear Dma channel interrupt */
-	Cy_DMA_Channel_ClearInterrupt(UART_DMA_HW, UART_DMA_CHANNEL);
+	Cy_DMA_Channel_ClearInterrupt(DMA_UART_HW, DMA_UART_CHANNEL);
 }
 /* [] END OF FILE */
