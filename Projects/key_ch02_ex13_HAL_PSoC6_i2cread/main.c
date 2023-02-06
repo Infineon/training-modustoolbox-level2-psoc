@@ -42,12 +42,10 @@
 #include "cyhal.h"
 #include "cybsp.h"
 #include "cy_retarget_io.h"
-#include "mtb_bmi160.h"
+#include "xensiv_dps3xx_mtb.h"
 
-#define IMU_I2C_SDA (P6_1)
-#define IMU_I2C_SCL (P6_0)
+xensiv_dps3xx_t pressure_sensor;
 
-mtb_bmi160_t motion_sensor;
 cyhal_i2c_t i2c;
 cyhal_i2c_cfg_t i2c_cfg = {
     .is_slave = false,
@@ -75,8 +73,8 @@ int main(void)
         CY_ASSERT(0);
     }
 
-    /* Initialize i2c for motion sensor */
-    result = cyhal_i2c_init(&i2c, IMU_I2C_SDA, IMU_I2C_SCL, NULL);
+    /* Initialize i2c */
+    result = cyhal_i2c_init(&i2c, CYBSP_I2C_SDA, CYBSP_I2C_SCL, NULL);
     if (result != CY_RSLT_SUCCESS)
     {
         CY_ASSERT(0);
@@ -87,23 +85,24 @@ int main(void)
         CY_ASSERT(0);
     }
 
-    /* Initialize motion sensor */
-    result = mtb_bmi160_init_i2c(&motion_sensor, &i2c, MTB_BMI160_DEFAULT_ADDRESS);
+    /* Initialize pressure sensor */
+    result = xensiv_dps3xx_mtb_init_i2c(&pressure_sensor, &i2c, XENSIV_DPS3XX_I2C_ADDR_DEFAULT);
     if (result != CY_RSLT_SUCCESS)
     {
-        CY_ASSERT(0);
+    	CY_ASSERT(0);
     }
     
     for (;;)
     {
-        /* Get the accel and gyro data and print the results to the UART */
-        mtb_bmi160_data_t data;
-        mtb_bmi160_read(&motion_sensor, &data);
+        /* Get the pressure and temperature data and print the results to the UART */
+        float pressure, temperature;
 
-        printf("Accel: X:%6d Y:%6d Z:%6d\r\n", data.accel.x, data.accel.y, data.accel.z);
-        printf("Gyro : X:%6d Y:%6d Z:%6d\r\n\r\n", data.gyro.x, data.gyro.y, data.gyro.z);
+        xensiv_dps3xx_read(&pressure_sensor, &pressure, &temperature);
 
-        cyhal_system_delay_ms(100);
+        printf("Pressure   : %8f\r\n", pressure);
+        printf("Temperature: %8f\r\n\r\n", temperature);
+
+        cyhal_system_delay_ms(500);
     }
 }
 

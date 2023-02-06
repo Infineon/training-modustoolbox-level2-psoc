@@ -29,12 +29,25 @@ This class consists of 7 chapters:
 
 ## Hardware
 
-The following hardware is used for the exercises in this class:
+There are several different kits that may be used in the exercises for this class. A few options are:
 
+Option 1: This option allows every exercise to be done.
 - CY8CKIT-062S2-43012 (PSoC™ 62S2 Wi-Fi BT Pioneer Kit)
+- CY8CKIT-028-SENSE (Shield Board containing sensors, microphones and an OLED display)
 - CY8CKIT-149 (PSoC™ 4100S Plus Prototyping Kit)
-- CY8CKIT-028-TFT (TFT Display Shield Board)(optional)
 - Ammeter (for low power chapter exercises)
+
+Option 2: This option allows all exercies to be done except for PSoC™ 4 DMA.
+- CY8CKIT-062S2-43012 (PSoC™ 62S2 Wi-Fi BT Pioneer Kit)
+- CY8CKIT-028-SENSE (Shield Board containing sensors, microphones and an OLED display)
+- Ammeter (for low power chapter exercises)
+
+Option 3: This option allows all excercises to be done except for PSoC™ 4 DMA, PSoC™ 6 ADC, I2C, and OLED.
+- CY8CPROTO-062-4343W
+- Ammeter (for low power chapter exercises)
+
+Option 4: This option allows only PSoC™ 4 exercises to be done. This includes PDL exercises in the Peripherals chapter, CAPSENSE™ exercises, and DMA exercies. 
+- CY8CKIT-149 (PSoC™ 4100S Plus Prototyping Kit)
 
 ## Videos
 
