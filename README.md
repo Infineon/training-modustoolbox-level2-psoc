@@ -17,7 +17,7 @@ UARTs, etc. CAPSENSE™ and DMA are covered in detail, as is the use of low powe
 
 ## Manual Chapters
 
-This class consists of 7 chapters:
+This class consists of 8 chapters:
 - Chapter 1: Introduction - Overall introduction to PSoC™ devices
 - Chapter 2: Peripherals - Description of the PDL and HAL middleware, how to use them to interact with PSoC™ peripherals
 - Chapter 3: RTOS - Introduction to using an RTOS with PSoC™
@@ -29,25 +29,23 @@ This class consists of 7 chapters:
 
 ## Hardware
 
-There are several different kits that may be used in the exercises for this class. A few options are:
+There are several different kits that may be used in the exercises for this class.
 
-Option 1: This option allows every exercise to be done.
+One or more of the following MCU kits is required:
+
 - CY8CKIT-062S2-43012 (PSoC™ 62S2 Wi-Fi BT Pioneer Kit)
+- CYW20829M2EVK-02 (AIROC™ CYW20829 Bluetooth® Low Energy SoC Evaluation Kit) - does not support CAPSENSE or dual core exercises
+- CY8CPROTO-062-4343W (PSoC™ 6 Wi-Fi BT Prototyping kit) - does not support OLED or I2C exercises
+- CY8CPROTO-062S2-43439 (PSoC™ 6 Wi-Fi BT Prototyping kit) - does not support OLED or I2C exercises
+- CY8CKIT-149 (PSoC™ 4100S Plus Prototyping Kit) - does not support HAL or dual core exercises
+
+The following shield board is required to do the OLED and I2C exercises. You must also have either the CY8CKIT-062S2-43012 or CYW20829M2EVK-02 to connect the shield.
+
 - CY8CKIT-028-SENSE (Shield Board containing sensors, microphones and an OLED display)
-- CY8CKIT-149 (PSoC™ 4100S Plus Prototyping Kit)
-- Ammeter (for low power chapter exercises)
 
-Option 2: This option allows all exercies to be done except for PSoC™ 4 DMA.
-- CY8CKIT-062S2-43012 (PSoC™ 62S2 Wi-Fi BT Pioneer Kit)
-- CY8CKIT-028-SENSE (Shield Board containing sensors, microphones and an OLED display)
-- Ammeter (for low power chapter exercises)
+An ammeter is required if you want to measure current consumption for the low-power exercises in chapter 5:
 
-Option 3: This option allows all excercises to be done except for PSoC™ 4 DMA, PSoC™ 6 ADC, I2C, and OLED.
-- CY8CPROTO-062-4343W
 - Ammeter (for low power chapter exercises)
-
-Option 4: This option allows only PSoC™ 4 exercises to be done. This includes PDL exercises in the Peripherals chapter, CAPSENSE™ exercises, and DMA exercies. 
-- CY8CKIT-149 (PSoC™ 4100S Plus Prototyping Kit)
 
 ## Videos
 
